@@ -43,7 +43,6 @@ class Authenticate:
                 },
             )
             if status != 200:
-                print(data)
                 log.error(f"Server returned invalid status code {status}. Authentication failed.")
                 return
 

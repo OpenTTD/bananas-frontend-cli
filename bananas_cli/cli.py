@@ -21,6 +21,15 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @click.pass_context
 @task
 async def cli(ctx, api_url, tus_url, client_id):
+    """
+    A CLI tool to list, upload, and otherwise modify BaNaNaS content.
+
+    Every option can also be set via an environment variable prefixed with
+    BANANAS_CLI_; for example:
+
+    BANANAS_CLI_API_URL="http://localhost:8000" python -m bananas_clie
+    """
+
     global session
 
     logging.basicConfig(

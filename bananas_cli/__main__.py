@@ -12,7 +12,7 @@ from .exceptions import Exit
 
 if __name__ == "__main__":
     try:
-        cli(auto_envvar_prefix="APE", standalone_mode=False)
+        cli(auto_envvar_prefix="BANANAS_CLI", standalone_mode=False)
     except Exit:
         sys.exit(1)
     except ClickException as e:

@@ -10,7 +10,7 @@ This is a CLI frontend for the OpenTTD's content service, called BaNaNaS.
 
 ## Development
 
-This API is written in Python 3.8 with aiohttp, and makes strong use of asyncio.
+This CLI tool is written in Python 3.8 with aiohttp, and makes strong use of asyncio.
 
 ## Usage
 
