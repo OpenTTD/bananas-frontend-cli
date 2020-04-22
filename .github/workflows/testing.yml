@@ -16,7 +16,7 @@ jobs:
     - name: Flake8 regression_runner
       uses: TrueBrain/actions-flake8@master
       with:
-        path: ape
+        path: bananas_cli
 
   black:
     name: Black
@@ -34,4 +34,4 @@ jobs:
         pip install black
     - name: Black
       run: |
-        black -l 120 --check ape
+        black -l 120 --check bananas_cli
