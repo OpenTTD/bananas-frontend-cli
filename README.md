@@ -7,6 +7,9 @@
 [![GitHub Workflow Status (Testing)](https://img.shields.io/github/workflow/status/OpenTTD/bananas-frontend-cli/Testing/master?label=master)](https://github.com/OpenTTD/bananas-frontend-cli/actions?query=workflow%3ATesting)
 
 This is a CLI frontend for the OpenTTD's content service, called BaNaNaS.
+It works together with [bananas-api](https://github.com/OpenTTD/bananas-api), which serves the HTTP API.
+
+See [introduction.md](https://github.com/OpenTTD/bananas-api/tree/master/docs/introduction.md) for more documentation about the different BaNaNaS components and how they work together.
 
 ## Development
 
