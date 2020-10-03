@@ -44,7 +44,7 @@ class Authenticate:
             )
             if status != 200:
                 log.error(f"Server returned invalid status code {status}. Authentication failed.")
-                return
+                return web.Response(text="Authentication failed because the OAuth Provider returned an error.")
 
             with open(Authenticate.token_filename, "w") as f:
                 f.write(data["access_token"])
