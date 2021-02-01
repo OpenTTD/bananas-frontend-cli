@@ -7,7 +7,7 @@ click==7.1.2
 future==0.18.2
 idna==3.1
 multidict==5.1.0
-requests==2.25.0
+requests==2.25.1
 six==1.15.0
 tinydb==4.3.0
 tuspy==0.2.4
