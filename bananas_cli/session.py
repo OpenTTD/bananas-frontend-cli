@@ -1,5 +1,6 @@
 import aiohttp
 import logging
+import urllib.parse
 
 from tusclient.client import TusClient
 from tusclient.exceptions import TusCommunicationError
@@ -36,27 +37,29 @@ class Session:
         return response.status, data
 
     async def get(self, url):
-        response = await self.session.get(f"{self.api_url}{url}", headers=self._headers, allow_redirects=False)
+        full_url = urllib.parse.urljoin(self.api_url, url)
+        response = await self.session.get(full_url, headers=self._headers, allow_redirects=False)
         return await self._read_response(response)
 
     async def post(self, url, json):
-        response = await self.session.post(
-            f"{self.api_url}{url}", json=json, headers=self._headers, allow_redirects=False
-        )
+        full_url = urllib.parse.urljoin(self.api_url, url)
+        response = await self.session.post(full_url, json=json, headers=self._headers, allow_redirects=False)
         return await self._read_response(response)
 
     async def put(self, url, json):
-        response = await self.session.put(
-            f"{self.api_url}{url}", json=json, headers=self._headers, allow_redirects=False
-        )
+        full_url = urllib.parse.urljoin(self.api_url, url)
+        response = await self.session.put(full_url, json=json, headers=self._headers, allow_redirects=False)
         return await self._read_response(response)
 
     def tus_upload(self, upload_token, fullpath, filename):
-        tus = TusClient(f"{self.tus_url}/new-package/tus/")
+        full_url = urllib.parse.urljoin(self.tus_url, "/new-package/tus/")
+        tus = TusClient(full_url)
 
         try:
             uploader = tus.uploader(
-                fullpath, chunk_size=UPLOAD_CHUNK_SIZE, metadata={"filename": filename, "upload-token": upload_token}
+                fullpath,
+                chunk_size=UPLOAD_CHUNK_SIZE,
+                metadata={"filename": filename, "upload-token": upload_token},
             )
             uploader.upload()
         except TusCommunicationError:
