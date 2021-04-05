@@ -27,6 +27,8 @@ class Session:
 
     async def _read_response(self, response):
         if response.status in (200, 201, 400, 404):
+            if response.content_type == "text/html":
+                return 302, response.url
             data = await response.json()
         elif response.status in (301, 302):
             data = response.headers["Location"]

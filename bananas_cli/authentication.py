@@ -26,6 +26,7 @@ class Authenticate:
     session = None
     token_filename = None
     success = False
+    client_id = None
 
     @staticmethod
     @routes.get("/")
@@ -35,7 +36,7 @@ class Authenticate:
             status, data = await Authenticate.session.post(
                 "/user/token",
                 json={
-                    "client_id": "ape",
+                    "client_id": Authenticate.client_id,
                     "redirect_uri": "http://localhost:3977/",
                     "code_verifier": Authenticate.code_verifier,
                     "code": code,
@@ -78,7 +79,7 @@ class Authenticate:
             raise Exit
 
 
-async def authenticate(session, client_id):
+async def authenticate(session, client_id, audience):
     config_folder = click.get_app_dir("bananas-cli")
     os.makedirs(config_folder, exist_ok=True)
     token_filename = config_folder + "/token"
@@ -95,13 +96,14 @@ async def authenticate(session, client_id):
     Authenticate.token_filename = token_filename
     Authenticate.session = session
     Authenticate.code_verifier = secrets.token_hex(32)
+    Authenticate.client_id = client_id
 
     digest = hashlib.sha256(Authenticate.code_verifier.encode()).digest()
     code_challenge = base64.urlsafe_b64encode(digest).decode().rstrip("=")
 
     status, data = await session.get(
         "/user/authorize?"
-        "audience=github&"
+        f"audience={audience}&"
         "redirect_uri=http%3A%2F%2Flocalhost%3A3977%2F&"
         "response_type=code&"
         f"client_id={client_id}&"
