@@ -28,7 +28,7 @@ async def cli(ctx, api_url, tus_url, client_id, audience):
     Every option can also be set via an environment variable prefixed with
     BANANAS_CLI_; for example:
 
-    BANANAS_CLI_API_URL="http://localhost:8000" python -m bananas_clie
+    BANANAS_CLI_API_URL="http://localhost:8000" python -m bananas_cli
     """
 
     global session
@@ -44,6 +44,11 @@ async def cli(ctx, api_url, tus_url, client_id, audience):
     ctx.obj = session
 
     await session.start()
+
+    os_args = click.get_os_args()
+    if "-h" in os_args or "--help" in os_args:
+        return
+
     await authenticate(session, client_id, audience)
 
 
