@@ -15,8 +15,8 @@ UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024
 class Session:
     def __init__(self, api_url, tus_url):
         self.session = None
-        self.api_url = api_url
-        self.tus_url = tus_url
+        self.api_url = f"${api_url}/"
+        self.tus_url = f"${tus_url}/"
 
         self._headers = {}
 
@@ -54,7 +54,7 @@ class Session:
         return await self._read_response(response)
 
     def tus_upload(self, upload_token, fullpath, filename):
-        full_url = urllib.parse.urljoin(self.tus_url, "/new-package/tus/")
+        full_url = urllib.parse.urljoin(self.tus_url, "new-package/tus/")
         tus = TusClient(full_url)
 
         try:
