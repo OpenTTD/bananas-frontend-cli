@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 @pass_session
 @task
 async def list_self(session):
-    status, data = await session.get("/package/self")
+    status, data = await session.get("package/self")
     if status != 200:
         log.error(f"Server returned invalid status code {status}: {data}")
         raise Exit
