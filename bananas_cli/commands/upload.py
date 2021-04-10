@@ -41,7 +41,7 @@ async def upload(session, version, name, description, url, license, files):
 
     starting_part = "/".join(parts) + "/"
 
-    status, data = await session.post("/new-package", json={})
+    status, data = await session.post("new-package", json={})
     if status != 200:
         log.error(f"Server returned invalid status code {status}: {data}")
         raise Exit
@@ -61,7 +61,7 @@ async def upload(session, version, name, description, url, license, files):
     if license:
         payload["license"] = license
 
-    status, data = await session.put(f"/new-package/{upload_token}", json=payload)
+    status, data = await session.put(f"new-package/{upload_token}", json=payload)
     if status == 400:
         show_validation_errors(data)
         raise Exit
@@ -74,7 +74,7 @@ async def upload(session, version, name, description, url, license, files):
         log.info(f"Uploading {filename} ...")
         session.tus_upload(upload_token, fullpath, filename)
 
-    status, data = await session.post(f"/new-package/{upload_token}/publish", json={})
+    status, data = await session.post(f"new-package/{upload_token}/publish", json={})
     if status == 400:
         show_validation_errors(data)
         raise Exit
