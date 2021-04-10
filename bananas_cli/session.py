@@ -15,8 +15,8 @@ UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024
 class Session:
     def __init__(self, api_url, tus_url):
         self.session = None
-        self.api_url = f"${api_url}/"
-        self.tus_url = f"${tus_url}/"
+        self.api_url = f"{api_url}/"
+        self.tus_url = f"{tus_url}/"
 
         self._headers = {}
 
