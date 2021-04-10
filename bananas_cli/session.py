@@ -13,12 +13,13 @@ UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024
 
 
 class Session:
-    def __init__(self, api_url, tus_url):
+    def __init__(self, api_url, tus_url, verbose):
         self.session = None
         self.api_url = f"{api_url}/"
         self.tus_url = f"{tus_url}/"
 
         self._headers = {}
+        self.verbose = verbose
 
     async def start(self):
         self.session = aiohttp.ClientSession()
@@ -64,8 +65,11 @@ class Session:
                 metadata={"filename": filename, "upload-token": upload_token},
             )
             uploader.upload()
-        except TusCommunicationError:
-            log.exception(f"Failed to upload file '{filename}'")
+        except TusCommunicationError as e:
+            if self.verbose:
+                log.exception(f"Failed to upload file '{filename}'")
+            else:
+                log.error(f"Failed to upload file '{filename}': {e}")
             raise Exit
 
     def set_header(self, header, value):

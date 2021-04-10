@@ -1,9 +1,11 @@
 import click
 import logging
 
+from aiohttp.client_exceptions import ClientConnectorError
 from .authentication import authenticate
 from .helpers import task
 from .session import Session
+from .exceptions import Exit
 
 log = logging.getLogger(__name__)
 pass_session = click.make_pass_decorator(Session)
@@ -19,9 +21,10 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @click.option("--tus-url", help="BaNaNaS tus URL. (normally the same as --api-url)", metavar="URL")
 @click.option("--client-id", help="Client-id to use for authentication", default="ape", show_default=True)
 @click.option("--audience", help="Audience to use for authentication", default="github", show_default=False)
+@click.option("--verbose", help="Enable verbose output for errors, showing tracebacks", is_flag=True)
 @click.pass_context
 @task
-async def cli(ctx, api_url, tus_url, client_id, audience):
+async def cli(ctx, api_url, tus_url, client_id, audience, verbose):
     """
     A CLI tool to list, upload, and otherwise modify BaNaNaS content.
 
@@ -40,7 +43,7 @@ async def cli(ctx, api_url, tus_url, client_id, audience):
     if not tus_url:
         tus_url = api_url
 
-    session = Session(api_url, tus_url)
+    session = Session(api_url, tus_url, verbose)
     ctx.obj = session
 
     await session.start()
@@ -49,7 +52,14 @@ async def cli(ctx, api_url, tus_url, client_id, audience):
     if "-h" in os_args or "--help" in os_args:
         return
 
-    await authenticate(session, client_id, audience)
+    try:
+        await authenticate(session, client_id, audience)
+    except (ClientConnectorError, NameError) as e:
+        if verbose:
+            log.exception(e)
+        else:
+            log.error(e)
+        raise Exit
 
 
 @task

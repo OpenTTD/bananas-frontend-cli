@@ -28,6 +28,9 @@ def show_validation_errors(data):
 @pass_session
 @task
 async def upload(session, version, name, description, url, license, files):
+    if len(files) == 0:
+        log.error("No files specified for upload")
+        return
     parts = files[0].split("/")[:-1]
     for filename in files:
         check_parts = filename.split("/")
