@@ -1,7 +1,7 @@
 import click
 import logging
 
-from .authentication import authenticate
+from .authentication import Authenticate
 from .helpers import task
 from .session import Session
 
@@ -43,7 +43,7 @@ async def cli(ctx, api_url, tus_url, client_id):
     ctx.obj = session
 
     await session.start()
-    await authenticate(session, client_id)
+    Authenticate.client_id = client_id
 
 
 @task
