@@ -18,9 +18,10 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 )
 @click.option("--tus-url", help="BaNaNaS tus URL. (normally the same as --api-url)", metavar="URL")
 @click.option("--client-id", help="Client-id to use for authentication", default="ape", show_default=True)
+@click.option("--audience", help="Audience to use for authentication", default="github", show_default=True)
 @click.pass_context
 @task
-async def cli(ctx, api_url, tus_url, client_id):
+async def cli(ctx, api_url, tus_url, client_id, audience):
     """
     A CLI tool to list, upload, and otherwise modify BaNaNaS content.
 
@@ -44,6 +45,7 @@ async def cli(ctx, api_url, tus_url, client_id):
 
     await session.start()
     Authenticate.client_id = client_id
+    Authenticate.audience = audience
 
 
 @task
