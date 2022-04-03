@@ -28,6 +28,9 @@ def show_validation_errors(data):
 @pass_session
 @task
 async def upload(session, version, name, description, url, license, files):
+    if len(files) == 0:
+        log.error("No files specified for upload")
+        return
     parts = files[0].split("/")[:-1]
     for filename in files:
         check_parts = filename.split("/")
@@ -41,7 +44,7 @@ async def upload(session, version, name, description, url, license, files):
 
     starting_part = "/".join(parts) + "/"
 
-    status, data = await session.post("/new-package", json={})
+    status, data = await session.post("new-package", json={})
     if status != 200:
         log.error(f"Server returned invalid status code {status}: {data}")
         raise Exit
@@ -61,7 +64,7 @@ async def upload(session, version, name, description, url, license, files):
     if license:
         payload["license"] = license
 
-    status, data = await session.put(f"/new-package/{upload_token}", json=payload)
+    status, data = await session.put(f"new-package/{upload_token}", json=payload)
     if status == 400:
         show_validation_errors(data)
         raise Exit
@@ -74,7 +77,7 @@ async def upload(session, version, name, description, url, license, files):
         log.info(f"Uploading {filename} ...")
         session.tus_upload(upload_token, fullpath, filename)
 
-    status, data = await session.post(f"/new-package/{upload_token}/publish", json={})
+    status, data = await session.post(f"new-package/{upload_token}/publish", json={})
     if status == 400:
         show_validation_errors(data)
         raise Exit
