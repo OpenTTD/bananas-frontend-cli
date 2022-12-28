@@ -4,7 +4,7 @@
 [![GitHub Tag](https://img.shields.io/github/v/tag/OpenTTD/bananas-frontend-cli?include_prereleases&label=stable)](https://github.com/OpenTTD/bananas-frontend-cli/releases)
 [![GitHub commits since latest release](https://img.shields.io/github/commits-since/OpenTTD/bananas-frontend-cli/latest/main)](https://github.com/OpenTTD/bananas-frontend-cli/commits/main)
 
-[![GitHub Workflow Status (Testing)](https://img.shields.io/github/workflow/status/OpenTTD/bananas-frontend-cli/Testing/main?label=main)](https://github.com/OpenTTD/bananas-frontend-cli/actions?query=workflow%3ATesting)
+[![GitHub Workflow Status (Testing)](https://img.shields.io/github/actions/workflow/status/OpenTTD/bananas-frontend-cli/testing.yml?branch=main&label=main)](https://github.com/OpenTTD/bananas-frontend-cli/actions/workflows/testing.yml)
 
 This is a CLI frontend for the OpenTTD's content service, called BaNaNaS.
 It works together with [bananas-api](https://github.com/OpenTTD/bananas-api), which serves the HTTP API.
