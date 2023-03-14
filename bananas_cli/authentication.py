@@ -26,6 +26,8 @@ class Authenticate:
     session = None
     token_filename = None
     success = False
+    client_id = None
+    audience = None
 
     @staticmethod
     @routes.get("/")
@@ -35,7 +37,7 @@ class Authenticate:
             status, data = await Authenticate.session.post(
                 "/user/token",
                 json={
-                    "client_id": "ape",
+                    "client_id": Authenticate.client_id,
                     "redirect_uri": "http://localhost:3977/",
                     "code_verifier": Authenticate.code_verifier,
                     "code": code,
@@ -78,7 +80,7 @@ class Authenticate:
             raise Exit
 
 
-async def authenticate(session, client_id):
+async def authenticate(session):
     config_folder = click.get_app_dir("bananas-cli")
     os.makedirs(config_folder, exist_ok=True)
     token_filename = config_folder + "/token"
@@ -101,10 +103,10 @@ async def authenticate(session, client_id):
 
     status, data = await session.get(
         "/user/authorize?"
-        "audience=github&"
+        f"audience={Authenticate.audience}&"
         "redirect_uri=http%3A%2F%2Flocalhost%3A3977%2F&"
         "response_type=code&"
-        f"client_id={client_id}&"
+        f"client_id={Authenticate.client_id}&"
         f"code_challenge={code_challenge}&"
         "code_challenge_method=S256"
     )
@@ -112,6 +114,8 @@ async def authenticate(session, client_id):
         log.error(f"Server returned invalid status code {status}. Authentication failed. Error: {data}")
         raise Exit
 
+    if data.startswith("/"):
+        data = f"{session.api_url}{data}"
     print("Please visit the following URL to authenticate:")
     print(f"  {data}")
 

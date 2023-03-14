@@ -6,6 +6,7 @@ from ..cli import (
 )
 from ..exceptions import Exit
 from ..helpers import task
+from ..authentication import authenticate
 
 log = logging.getLogger(__name__)
 
@@ -14,6 +15,8 @@ log = logging.getLogger(__name__)
 @pass_session
 @task
 async def list_self(session):
+    await authenticate(session)
+
     status, data = await session.get("/package/self")
     if status != 200:
         log.error(f"Server returned invalid status code {status}: {data}")
