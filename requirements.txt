@@ -1,13 +1,13 @@
-aiohttp==3.9.3
+aiohttp==3.9.5
 async-timeout==4.0.3
 attrs==23.2.0
 certifi==2024.2.2
 chardet==5.2.0
 click==8.1.7
 future==1.0.0
-idna==3.6
+idna==3.7
 multidict==6.0.5
-requests==2.31.0
+requests==2.32.3
 six==1.16.0
 tinydb==4.8.0
 tuspy==1.0.3
