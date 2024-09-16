@@ -88,7 +88,7 @@ async def authenticate(session, client_id):
             bearer_token = f.read()
 
         session.set_header("Authorization", f"Bearer {bearer_token}")
-        status, data = await session.get("/user")
+        status, data = await session.get("user")
         if status == 200:
             return
 
@@ -100,7 +100,7 @@ async def authenticate(session, client_id):
     code_challenge = base64.urlsafe_b64encode(digest).decode().rstrip("=")
 
     status, data = await session.get(
-        "/user/authorize?"
+        "user/authorize?"
         "audience=github&"
         "redirect_uri=http%3A%2F%2Flocalhost%3A3977%2F&"
         "response_type=code&"
